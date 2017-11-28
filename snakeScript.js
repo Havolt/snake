@@ -1,7 +1,11 @@
 
 let snakeCan;
 let ctx;
+const tileSize = 20;
 const canSize = 480;
+const tileAmt = 12;
+let gameSpeed = 500;
+let snake = {};
 
 function createCanvas(){
   const c = document.createElement('canvas');
@@ -20,10 +24,24 @@ function createMenu(){
   bu.id="startButton";
   bu.innerHTML="Start";
   app.appendChild(bu);
+  startButton.addEventListener('click', startGame);
 }
 
-function assigner(){
+function createSnake(){
+  snake.length = 3;
+  snake.headX = 6;
+  snake.headY = 6;
+  snake.direction = 0;
+}
 
+
+function gameEngine(){
+  console.log('yes mate');
+}
+
+function startGame(){
+  startButton.style.display="none";
+  setInterval(gameEngine, gameSpeed);
 }
 
 
@@ -32,5 +50,6 @@ function assigner(){
 (function init(){
   createCanvas();
   createMenu();
-  assigner();
+  createSnake();
+  //assigner();
 })();
