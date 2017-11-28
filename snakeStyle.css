@@ -1,0 +1,11 @@
+body, html{
+  background-color: #f7f7f7;
+}
+
+#snakeCan{
+  width: 480px;
+  height: 480px;
+  border: 2px solid black;
+  margin: 0 auto;
+  display: block;
+}
