@@ -4,7 +4,7 @@ let ctx;
 const tileSize = 20;
 const canSize = 480;
 const tileAmt = 12;
-let gameSpeed = 500;
+let gameSpeed = 400;
 let snake = {};
 
 function createCanvas(){
@@ -32,16 +32,55 @@ function createSnake(){
   snake.headX = 6;
   snake.headY = 6;
   snake.direction = 0;
+  snake.body = [[6,6], [6,7], [6,8]];
 }
 
+function snakeMove(){
+  if(snake.direction == 0){
+    snake.headY--;
+  }
+  else if(snake.direction == 1){
+    snake.headX--;
+  }
+  else if(snake.direction == 2){
+    snake.headY++;
+  }
+  else if(snake.direction == 3){
+    snake.headX++;
+  }
+}
+
+function changeDir(e){
+  if(e.key == 'ArrowUp'){
+    snake.direction = 0;
+  }
+  else if(e.key == 'ArrowDown'){
+    snake.direction = 2;
+  }
+  else if(e.key == 'ArrowLeft'){
+    snake.direction = 1;
+  }
+  else if(e.key == 'ArrowRight'){
+    snake.direction = 3;
+  }
+}
+
+function snakeDraw(){
+  ctx.fillStyle="#141619";
+  ctx.fillRect(0,0,canSize,canSize);
+  ctx.fillStyle="white";
+  ctx.fillRect((snake.headX*tileSize),(snake.headY*tileSize),tileSize,tileSize);
+}
 
 function gameEngine(){
-  console.log('yes mate');
+  snakeMove();
+  snakeDraw();
 }
 
 function startGame(){
   startButton.style.display="none";
   setInterval(gameEngine, gameSpeed);
+  document.addEventListener('keydown', changeDir);
 }
 
 
