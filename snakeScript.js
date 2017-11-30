@@ -32,7 +32,7 @@ function createSnake(){
   snake.headX = 6;
   snake.headY = 6;
   snake.direction = 0;
-  snake.body = [[6,6], [6,7], [6,8]];
+  snake.body = [{x:6, y:6}, {x:6, y:7}, {x:6, y:8}];
 }
 
 function snakeMove(){
@@ -51,16 +51,16 @@ function snakeMove(){
 }
 
 function changeDir(e){
-  if(e.key == 'ArrowUp'){
+  if(e.key == 'ArrowUp' && snake.direction != 2){
     snake.direction = 0;
   }
-  else if(e.key == 'ArrowDown'){
+  else if(e.key == 'ArrowDown' && snake.direction != 0){
     snake.direction = 2;
   }
-  else if(e.key == 'ArrowLeft'){
+  else if(e.key == 'ArrowLeft' && snake.direction != 3){
     snake.direction = 1;
   }
-  else if(e.key == 'ArrowRight'){
+  else if(e.key == 'ArrowRight' && snake.direction != 1){
     snake.direction = 3;
   }
 }
@@ -72,9 +72,14 @@ function snakeDraw(){
   ctx.fillRect((snake.headX*tileSize),(snake.headY*tileSize),tileSize,tileSize);
 }
 
+function snakeTail(){
+  snake.body[0][0] = snake.headX;
+}
+
 function gameEngine(){
   snakeMove();
   snakeDraw();
+  snakeTail();
 }
 
 function startGame(){
