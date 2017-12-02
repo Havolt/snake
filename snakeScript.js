@@ -6,6 +6,7 @@ const canSize = 480;
 const tileAmt = 12;
 let gameSpeed = 300;
 let snake = {};
+let food = {size:10, new: true};
 
 function createCanvas(){
   const c = document.createElement('canvas');
@@ -83,14 +84,30 @@ function snakeTail(){
     snake.body[i].x = snake.body[i-1].x;
     snake.body[i].y = snake.body[i-1].y;
   }
-  
+}
+
+function createFood(){
+  if(food.new){
+    food.prevX = food.x;
+    food.prevY = food.y;
+    food.x = Math.floor(Math.random()*tileAmt);
+    console.log(food.x);
+    food.y = Math.floor(Math.random()*tileAmt);
+    while(food.x == food.prevX && food.y == food.prevY){
+      food.x = Math.floor(Math.random()*tileAmt);
+      food.y = Math.floor(Math.random()*tileAmt);
+    }
+    food.new = false;
+  }
+  ctx.fillStyle="white";
+  ctx.fillRect(food.x*tileSize+5, food.y*tileSize+5, food.size, food.size);
 }
 
 function gameEngine(){
   snakeTail();
   snakeMove();
   snakeDraw();
-  
+  createFood();
 }
 
 function startGame(){
