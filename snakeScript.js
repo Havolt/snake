@@ -4,7 +4,7 @@ let ctx;
 const tileSize = 20;
 const canSize = 480;
 const tileAmt = 12;
-let gameSpeed = 300;
+let gameSpeed = 200;
 let snake = {};
 let food = {size:10, new: true};
 
@@ -75,6 +75,9 @@ function snakeDraw(){
     ctx.fillStyle="white";
     ctx.fillRect((snake.body[i].x*tileSize),(snake.body[i].y*tileSize),tileSize,tileSize);
   }
+  if(snake.headX == food.x && snake.headY == food.y){
+    food.new = true;
+  }
 }
 
 function snakeTail(){
@@ -83,6 +86,16 @@ function snakeTail(){
   for(var i = snake.body.length-1; i > 0; i--){
     snake.body[i].x = snake.body[i-1].x;
     snake.body[i].y = snake.body[i-1].y;
+  }
+}
+
+function snakeAdd(){
+  let obj = {};
+  obj.x = snake.body[snake.body.length-1].x;
+  obj.y = snake.body[snake.body.length-1].y;
+  snake.body.push(obj);
+  if(gameSpeed > 55){
+    gameSpeed -= 20;
   }
 }
 
@@ -97,6 +110,7 @@ function createFood(){
       food.x = Math.floor(Math.random()*tileAmt);
       food.y = Math.floor(Math.random()*tileAmt);
     }
+    snakeAdd();
     food.new = false;
   }
   ctx.fillStyle="white";
@@ -108,11 +122,12 @@ function gameEngine(){
   snakeMove();
   snakeDraw();
   createFood();
+  setTimeout(gameEngine, gameSpeed);
 }
 
 function startGame(){
   startButton.style.display="none";
-  setInterval(gameEngine, gameSpeed);
+  gameEngine();
   document.addEventListener('keydown', changeDir);
 }
 
