@@ -154,17 +154,21 @@ function hitDetect(){
 }
 
 function gameOver(){
+
   ctx.fillStyle= "#141619";
   ctx.fillRect(0,0, canSize, canSize);
   ctx.fillStyle="white";
   ctx.font="40px arial";
   ctx.fillText('GAME OVER', 120, 160);
   gameSpeed = 200;
+  if(topScore < score){topScore = score};
   snake = {};
   food = {size:10, new: true};
   score = -1;
   startButton.style.display="block";
   createSnake();
+  
+  
 }
 
 function scoreKeeper(){
@@ -172,8 +176,10 @@ function scoreKeeper(){
   ctx2.fillRect(0, 0, canSize, scoreSize);
   ctx2.fillStyle="white";
   ctx2.font="24px arial";
-  ctx2.fillText('Score: ' + score, 20, 25);
-  ctx2.strokeStyle="black";
+  if(score < 0){
+    ctx2.fillText('Score: ' + 0, 20, 25);
+  }else{ctx2.fillText('Score: ' + score, 20, 25);}
+  ctx2.fillText('Top Score: ' + topScore, 320, 25);
 }
 
 function gameEngine(){
