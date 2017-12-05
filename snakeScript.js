@@ -11,6 +11,8 @@ let food = {size:10, new: true};
 let score = -1;
 let gameOverBool = false;
 let topScore = 0;
+let winState = false;
+let winObj = {arr: [], x: 0, y: 0, xTop: 23, yTop: 23, dir: 'y', yAdd: 1, xAdd: 1, yBottom:0,xBottom:0};
 
 function createCanvas(){
   const c = document.createElement('canvas');
@@ -197,6 +199,67 @@ function scoreKeeper(){
   ctx2.fillText('Top Score: ' + topScore, 320, 25);
 }
 
+function winGraphic(){
+  if(winObj.dir == 'y'){
+    if(winObj.y < winObj.yTop){
+      winObj.arr.push({x: winObj.x, y: winObj.y});
+      winObj.y += winObj.yAdd;
+      
+    }
+    else{
+      winObj.dir = 'x';
+      winObj.yTop--;
+      winObj.yAdd = -winObj.yAdd;
+      if(winObj.xBottom == 0){
+        winObj.xBottom = 1;
+      }
+    }
+  }
+  if(winObj.dir == 'x'){
+    if(winObj.x < winObj.xTop){
+      winObj.arr.push({x: winObj.x, y: winObj.y});
+      winObj.x += winObj.xAdd;
+    }
+    else{
+      winObj.dir = '-y';
+      winObj.xTop--;
+      winObj.xAdd = -winObj.xAdd;
+    }
+  }
+  if(winObj.dir == '-y'){
+    if(winObj.y > winObj.yBottom){
+      winObj.arr.push({x: winObj.x, y: winObj.y});
+      winObj.y += winObj.yAdd;
+    }
+    else{
+      winObj.dir = '-x';
+      winObj.yBottom++;
+      winObj.yAdd = -winObj.yAdd;
+    }
+  }
+  if(winObj.dir == '-x'){
+    if(winObj.x > winObj.xBottom){
+      winObj.arr.push({x: winObj.x, y: winObj.y});
+      winObj.x += winObj.xAdd;
+    }
+    else{
+      winObj.dir = 'y';
+      winObj.xBottom++;
+      winObj.xAdd = -winObj.xAdd;
+    }
+  }
+
+
+  for(var i = 0; i < winObj.arr.length; i++){
+    ctx.fillStyle="white";
+    ctx.fillRect(winObj.arr[i].x*tileSize, winObj.arr[i].y*tileSize, tileSize, tileSize);
+  }
+
+  if(winState){
+    setTimeout(winGraphic, 50);
+  }
+}
+
 function gameWin(){
   ctx.fillStyle="#141619";
   ctx.fillRect(0,0,canSize,canSize);
@@ -204,6 +267,9 @@ function gameWin(){
   ctx.font="50px arial";
   ctx.fillText('You Win!', 138, 180);
   startButton.style.display="block";
+  winState = true;
+
+  winGraphic();
 }
 
 function gameEngine(){
@@ -224,7 +290,10 @@ function gameEngine(){
 
 function startGame(){
   startButton.style.display="none";
+  score = -1;
   gameOverBool = false;
+  winState = false;
+  winObj = {arr: [], x: 0, y: 0, xTop: 23, yTop: 23, dir: 'y', yAdd: 1, xAdd: 1, yBottom:0,xBottom:0};;
   gameEngine();
   document.addEventListener('keydown', changeDir);
 }
