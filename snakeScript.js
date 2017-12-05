@@ -7,6 +7,7 @@ const tileAmt = 12;
 let gameSpeed = 200;
 let snake = {};
 let food = {size:10, new: true};
+let score = 0;
 
 function createCanvas(){
   const c = document.createElement('canvas');
@@ -94,7 +95,8 @@ function snakeAdd(){
   obj.x = snake.body[snake.body.length-1].x;
   obj.y = snake.body[snake.body.length-1].y;
   snake.body.push(obj);
-  if(gameSpeed > 55){
+  score++;
+  if(gameSpeed > 85){
     gameSpeed -= 20;
   }
 }
@@ -117,11 +119,20 @@ function createFood(){
   ctx.fillRect(food.x*tileSize+5, food.y*tileSize+5, food.size, food.size);
 }
 
+function hitDetect(){
+  for(var i = 0; i < snake.body.length; i++){
+    if( snake.headX == snake.body[i].x && snake.headY == snake.body[i].y){
+      console.log('happening');
+    }
+  }
+}
+
 function gameEngine(){
   snakeTail();
   snakeMove();
   snakeDraw();
   createFood();
+  hitDetect();
   setTimeout(gameEngine, gameSpeed);
 }
 
