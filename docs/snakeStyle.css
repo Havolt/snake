@@ -1,0 +1,51 @@
+body, html{
+  background-color: #f7f7f7;
+}
+
+#app{
+  position: relative;
+}
+
+canvas{
+  width: 480px;
+}
+
+#snakeCan{
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  display: block;
+  position: absolute;
+}
+
+#scoreboard{
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 480px;
+  display: block;
+  position: absolute;
+  height: 40px;
+}
+
+#startButton{
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 215px;
+  position: absolute;
+  width: 120px;
+  height: 50px;
+  background-color: #344d72;
+  outline: none;
+  color: white;
+  font-size: 2em;
+}
+
+#startButton:hover{
+  cursor: pointer;
+  text-shadow: 0 2px 2px black;
+}
