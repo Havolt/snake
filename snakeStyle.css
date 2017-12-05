@@ -6,6 +6,10 @@ body, html{
   position: relative;
 }
 
+canvas{
+  width: 480px;
+}
+
 #snakeCan{
   margin-left: auto;
   margin-right: auto;
@@ -20,9 +24,10 @@ body, html{
   margin-right: auto;
   left: 0;
   right: 0;
-    top: 480px;
+  top: 480px;
   display: block;
   position: absolute;
+  height: 40px;
 }
 
 #startButton{

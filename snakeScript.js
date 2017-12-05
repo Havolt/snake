@@ -4,7 +4,7 @@ let ctx;
 const tileSize = 20;
 const canSize = 480;
 const scoreSize = 40;
-const tileAmt = 12;
+const tileAmt = 24;
 let gameSpeed = 200;
 let snake = {};
 let food = {size:10, new: true};
@@ -66,17 +66,21 @@ function snakeMove(){
 }
 
 function changeDir(e){
-  if(e.key == 'ArrowUp' && snake.direction != 2){
+  if(e.key == 'ArrowUp' && snake.direction != 2 && !snake.moved){
     snake.direction = 0;
+    snake.moved = true;
   }
-  else if(e.key == 'ArrowDown' && snake.direction != 0){
+  else if(e.key == 'ArrowDown' && snake.direction != 0 && !snake.moved){
     snake.direction = 2;
+    snake.moved = true;
   }
-  else if(e.key == 'ArrowLeft' && snake.direction != 3){
+  else if(e.key == 'ArrowLeft' && snake.direction != 3 && !snake.moved){
     snake.direction = 1;
+    snake.moved = true;
   }
-  else if(e.key == 'ArrowRight' && snake.direction != 1){
+  else if(e.key == 'ArrowRight' && snake.direction != 1 && !snake.moved){
     snake.direction = 3;
+    snake.moved = true;
   }
 }
 
@@ -137,6 +141,9 @@ function hitDetect(){
     if( snake.headX == snake.body[i].x && snake.headY == snake.body[i].y){
       console.log('happening');
     }
+    if(snake.headX < 0 || snake.headY < 0 || snake.headX >= tileAmt || snake.headY >= tileAmt){
+      console.log('happening');
+    }
   }
 }
 
@@ -156,6 +163,7 @@ function gameEngine(){
   createFood();
   hitDetect();
   scoreKeeper();
+  snake.moved = false;
   setTimeout(gameEngine, gameSpeed);
 }
 
