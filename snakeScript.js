@@ -117,6 +117,26 @@ function snakeAdd(){
   }
 }
 
+function newPos(){
+  food.x = Math.floor(Math.random()*tileAmt);
+  food.y = Math.floor(Math.random()*tileAmt);
+}
+
+function posCheck(){
+  for(var i = 0; i < snake.body.length; i++){
+    if(snake.body[i].x == food.x && snake.body[i].y == food.y){
+      newPos();
+      posCheck();
+      break;
+    }
+  }
+  while(food.x == food.prevX && food.y == food.prevY){
+    newPos();
+    posCheck();
+    break;
+  }
+}
+
 function createFood(){
   if(food.new){
     food.prevX = food.x;
@@ -124,12 +144,7 @@ function createFood(){
     food.x = Math.floor(Math.random()*tileAmt);
     console.log(food.x);
     food.y = Math.floor(Math.random()*tileAmt);
-
-
-    while(food.x == food.prevX && food.y == food.prevY){
-      food.x = Math.floor(Math.random()*tileAmt);
-      food.y = Math.floor(Math.random()*tileAmt);
-    }
+    posCheck();
 
     snakeAdd();
     food.new = false;
