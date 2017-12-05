@@ -3,6 +3,7 @@ let snakeCan;
 let ctx;
 const tileSize = 20;
 const canSize = 480;
+const scoreSize = 40;
 const tileAmt = 12;
 let gameSpeed = 200;
 let snake = {};
@@ -17,6 +18,18 @@ function createCanvas(){
   ctx = snakeCan.getContext('2d');
   ctx.canvas.width = canSize;
   ctx.canvas.height = canSize;
+}
+
+function createScoreboard(){
+  const c = document.createElement('canvas');
+  c.id = "scoreboard";
+  app.appendChild(c);
+  scoreboard = document.getElementById('scoreboard');
+  ctx2 = scoreboard.getContext('2d');
+  ctx2.canvas.width = canSize;
+  ctx2.canvas.height = scoreSize;
+  ctx2.fillStyle = '#344d72';
+  ctx2.fillRect(0, 0, canSize, scoreSize);
 }
 
 function createMenu(){
@@ -127,12 +140,22 @@ function hitDetect(){
   }
 }
 
+function scoreKeeper(){
+  ctx2.fillStyle="#344d72";
+  ctx2.fillRect(0, 0, canSize, scoreSize);
+  ctx2.fillStyle="white";
+  ctx2.font="24px arial";
+  ctx2.fillText('Score: ' + score, 20, 25);
+  ctx2.strokeStyle="black";
+}
+
 function gameEngine(){
   snakeTail();
   snakeMove();
   snakeDraw();
   createFood();
   hitDetect();
+  scoreKeeper();
   setTimeout(gameEngine, gameSpeed);
 }
 
@@ -147,6 +170,7 @@ function startGame(){
 
 (function init(){
   createCanvas();
+  createScoreboard();
   createMenu();
   createSnake();
   //assigner();
