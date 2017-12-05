@@ -8,7 +8,9 @@ const tileAmt = 24;
 let gameSpeed = 200;
 let snake = {};
 let food = {size:10, new: true};
-let score = 0;
+let score = -1;
+let gameOverBool = false;
+let topScore = 0;
 
 function createCanvas(){
   const c = document.createElement('canvas');
@@ -63,24 +65,21 @@ function snakeMove(){
   else if(snake.direction == 3){
     snake.headX++;
   }
+  snake.prevDir = snake.direction;
 }
 
 function changeDir(e){
-  if(e.key == 'ArrowUp' && snake.direction != 2 && !snake.moved){
+  if(e.key == 'ArrowUp' && snake.prevDir != 2 ){
     snake.direction = 0;
-    snake.moved = true;
   }
-  else if(e.key == 'ArrowDown' && snake.direction != 0 && !snake.moved){
+  else if(e.key == 'ArrowDown' && snake.prevDir != 0 ){
     snake.direction = 2;
-    snake.moved = true;
   }
-  else if(e.key == 'ArrowLeft' && snake.direction != 3 && !snake.moved){
+  else if(e.key == 'ArrowLeft' && snake.prevDir != 3 ){
     snake.direction = 1;
-    snake.moved = true;
   }
-  else if(e.key == 'ArrowRight' && snake.direction != 1 && !snake.moved){
+  else if(e.key == 'ArrowRight' && snake.prevDir != 1 ){
     snake.direction = 3;
-    snake.moved = true;
   }
 }
 
@@ -125,10 +124,13 @@ function createFood(){
     food.x = Math.floor(Math.random()*tileAmt);
     console.log(food.x);
     food.y = Math.floor(Math.random()*tileAmt);
+
+
     while(food.x == food.prevX && food.y == food.prevY){
       food.x = Math.floor(Math.random()*tileAmt);
       food.y = Math.floor(Math.random()*tileAmt);
     }
+
     snakeAdd();
     food.new = false;
   }
@@ -139,12 +141,30 @@ function createFood(){
 function hitDetect(){
   for(var i = 0; i < snake.body.length; i++){
     if( snake.headX == snake.body[i].x && snake.headY == snake.body[i].y){
-      console.log('happening');
+      gameOverBool = true;
+      gameOver();
+      break;
     }
     if(snake.headX < 0 || snake.headY < 0 || snake.headX >= tileAmt || snake.headY >= tileAmt){
-      console.log('happening');
+      gameOverBool = true;
+      gameOver();
+      break;
     }
   }
+}
+
+function gameOver(){
+  ctx.fillStyle= "#141619";
+  ctx.fillRect(0,0, canSize, canSize);
+  ctx.fillStyle="white";
+  ctx.font="40px arial";
+  ctx.fillText('GAME OVER', 120, 160);
+  gameSpeed = 200;
+  snake = {};
+  food = {size:10, new: true};
+  score = -1;
+  startButton.style.display="block";
+  createSnake();
 }
 
 function scoreKeeper(){
@@ -163,12 +183,14 @@ function gameEngine(){
   createFood();
   hitDetect();
   scoreKeeper();
-  snake.moved = false;
-  setTimeout(gameEngine, gameSpeed);
+  if(!gameOverBool){
+    setTimeout(gameEngine, gameSpeed);
+  }
 }
 
 function startGame(){
   startButton.style.display="none";
+  gameOverBool = false;
   gameEngine();
   document.addEventListener('keydown', changeDir);
 }
