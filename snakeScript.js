@@ -197,7 +197,20 @@ function scoreKeeper(){
   ctx2.fillText('Top Score: ' + topScore, 320, 25);
 }
 
+function gameWin(){
+  ctx.fillStyle="#141619";
+  ctx.fillRect(0,0,canSize,canSize);
+  ctx.fillStyle="white";
+  ctx.font="50px arial";
+  ctx.fillText('You Win!', 138, 180);
+  startButton.style.display="block";
+}
+
 function gameEngine(){
+  if(score == 100){
+    gameWin();
+    return;
+  }
   snakeTail();
   snakeMove();
   snakeDraw();
